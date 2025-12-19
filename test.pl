@@ -386,6 +386,184 @@ partition(N, [H|T], T2, [H|L3]):- partition(N, T, T2, L3).
 
 
 
+tremax(A,B,L) :- tremax(A,B,L,0).
+tremax(_,_,L,3):-!.
+tremax([],[C|B],[C|R],N):- !,N1 is N+1, tremax([],B,R,N1).
+tremax([C|B],[],[C|R],N):- !,N1 is N+1, tremax(B,[],R,N1).
+tremax([A|B],[C|B2],[A|B3],N) :- N1 is N+1, A > C,!,tremax(B,B2,B3,N1).
+tremax([_|B],[C|B2],[C|B3],N) :- N1 is N+1, tremax(B,B2,B3,N1).
+
+
+genericmax([],[],[]).
+genericmax([H1|T1],[H2|T2],[H1|T3]):- H1>H2,!,genericmax(T1,T2,T3).
+genericmax([_|T1],[H2|T2],[H2|T3]):-genericmax(T1,T2,T3).
+
+
+%a([]):-write("qui0"),nl,!.
+a([_|R]):-write("qui!!"),a(R),nl.
+a([_]):-write("qui1"),nl.
+a([[]|_]):-write("qui2"),nl.
+a([_|[]]):-write("qui3"),nl,!.
+
+gmember([A|_],A):-!.
+gmember([_|R],A):-gmember(R,A).
+
+inserisciOrdL([],[],[]).
+inserisciOrdL([],L,L).
+inserisciOrdL(L,[],L).
+inserisciOrdL([A|R1],[B|R2],[A|R3]):-A<B,!,inserisciOrdL(R1,[B|R2],R3).
+inserisciOrdL([A|R1],[B|R2],[B|R3]):-inserisciOrdL([A|R1],R2,R3).
+
+
+inserisciOrd(N,[],[N]).
+inserisciOrd(N,[H|T1],[N,H|T1]):-N<H,!.
+inserisciOrd(N,[H|T1],[H|T2]):-inserisciOrd(N,T1,T2).
+
+
+%inserisciOrd2(N,[],[N]).
+inserisciOrd2(N,[H|T1],[H|T2]):-N>H,!,inserisciOrd2(N,T1,T2).
+inserisciOrd2(N,L2,[N|L2]).%inserisciOrd2(N,[H|T1],[N,H|T1]).
+
+
+cl([],_):-true,!.
+cl([A,_],N):- \+(gmember(A,N)),!.
+cl([_|T],N):-cl(T,N).
+
+
+gdelete(_,[],[]).
+gdelete(A,[A|R],R):-!,gdelete(A,R,R).
+gdelete(A,[B|R2],[B|R]):-gdelete(A,R2,R).
+
+gdl([],L,L).
+gdl([A|R],R2,R4) :- gdelete(A,R2,R3),!,gdl(R,R3,R4).
+gdl([_|R],R2,R3) :- gdl(R,R2,R3).
+
+max([X], X).
+max([H|T], H) :- max(T, MT), H >= MT,!.
+max([H|T], MT) :- max(T, MT).
+
+
+lla([A|B]):-write(A),lla(B).
+
+
+d_delete(_,[],[]).
+d_delete(A,[B|R],[B|L2]):- not(A==B),!,d_delete(A,R,L2).
+d_delete(A,[A|R],R1):- d_delete(A,R,R1).
+
+
+lllast([A],A).
+lllast([A|R],B):-lllast(R,B).
+
+
+seallorasplit(_,[],[]).
+seallorasplit(N,[H|T],[H|T2]) :- (N>(20+H)),!,seallorasplit(N,T,T2).
+seallorasplit(N,[_|T],T2):-seallorasplit(N,T,T2).
+
+
+hmin([A],A):-!.
+hmin([A|N],A) :- hmin(N,M),A < M,!.
+hmin([A|N],M) :- hmin(N,M).
+
+
+remove_dups([],_,[]).
+remove_dups([A|B],L2,[A|R]):- \+(member(A,L2)),!,remove_dups(B,L2,R).
+remove_dups([_|B],L2,R):- remove_dups(B,L2,R).
+
+
+
+
+membro(_,[]):-false,!.
+membro(H,[H|_]).
+membro(H,[_|R]):-membro(H,R).
+
+
+
+pisaunicalista([],[]).
+pisaunicalista([A|R],[A|R2]):-membro(A,R),!,pisaunicalista(R,R2).
+pisaunicalista([_|R],R2):-pisaunicalista(R,R2).
+
+
+
+stacca([],_,[]).
+stacca(_,0,[]):-!.
+stacca([A|R],N,[A|R2]):-N1 is N-1,stacca(R,N1,R2).
+
+
+
+ssl([_|R],RA):-write("cazzo"),ssl(R,RA).
+
+
+m(_,[]).
+m(N,[N|_]).
+m(N,[_|T]):-m(N,T).
+
+
+
+scelgolista([],_,_,[]).
+scelgolista([A|R1],M,L2,[A|RES]):- A>M, \+(member(A,L2)),scelgolista(R1,M,L2,RES).
+scelgolista([A|R1],M,L2,RES):-scelgolista(R1,M,L2,RES).
+
+
+
+
+
+
+
+
+
+moltiplicazione([],[],[]).
+moltiplicazione([H1|R1],[H2|R2],[P|R]):- P is H1*H2,!,moltiplicazione(R1,R2,R).
+
+
+
+
+
+
+
+
+
+
+tictac([],[],_):-!.
+tictac(A,B):-tictac(A,B,1).
+tictac([A|R1],[C|R2],N):- 1 is N mod 2, !, C is A*A*A, N1 is N+1,tictac(R1,R2,N1).
+tictac([A|R1],[Q|R2],N):- Q is A*A, N1 is N+1,tictac(R1,R2,N1).
+
+
+
+
+dl(L,N):-dl(L,1,N).
+dl([],_,[]):-!.
+dl([A|R1],N,[A|R2]):- 1 is N mod 2, !, N1 is N+1, dl(R1,N1,R2).
+dl([A|R1],N,R2):- N1 is N+1, dl(R1,N1,R2).
+
+
+plz([],0).
+plz([A|R],N):-plz(R,N1),N is N1+1.
+
+
+dio(N,[],[N]).
+dio(N,[A|R],[N,A|R]):-N<A,!.
+dio(N,[A|R],[A|R2]):-dio(N,R,R2).
+
+
+
+
+
+divisionerumorosa(L,0,[]):-!.
+divisionerumorosa([],_,[]):-!.
+divisionerumorosa([A|L],N,[A|L2]):- N1 is N-1,divisionerumorosa(L,N1,L2).
+
+
+
+
+sommatoria([],N,_):-N>0,!,false.
+sommatoria(_,0,0):-!.
+sommatoria([A|R],N,S):- N>0, N1 is N-1, sommatoria(R,N1,S1), S is S1+A.
+
+
+
+
+
 
 
 
